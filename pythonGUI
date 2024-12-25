@@ -1,0 +1,150 @@
+'''Python modern GUI app'''
+from customtkinter import CTk, CTkEntry, CTkCheckBox, CTkButton
+from tkinter import Canvas
+from PIL import Image, ImageTk, ImageDraw
+
+app = CTk()
+app.geometry("740x570")
+app.title("Python APP")
+app.iconbitmap("icons/abc.ico")
+app.resizable(False, False)
+
+#Function to add rounded corners to an Image
+def add_corner_radius(img_path, size, rad):
+    img = Image.open(img_path).resize(size).convert("RGBA")
+    mask = Image.new("L", img.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle((0, 0, size[0], size[1]), radius= rad, fill=255)
+    img.putalpha(mask)
+    return img
+
+#Create a left Canvas for the bg and text
+canv_left = Canvas(app, width=460, height= 720, bd=0, highlightthickness=0, background= "#2b2738")
+canv_left.place(x=0, y=0)
+
+#adding a rounded img bg to left canvas
+bg_img = add_corner_radius("sidebg.jpg", (440, 690), 15)
+bg_photo = ImageTk.PhotoImage(bg_img)
+canv_left.create_image(10, 10, anchor="nw", image= bg_photo)
+
+#text to the left canvas
+canv_left.create_text(240, 600, text= "Capturing Moments, \n Creating Memories", font= ("Helvetica", 28), fill="white")
+
+#creating a right canvas for the registration form
+canv_right = Canvas(app, width=470, height=720, bd=0, highlightthickness=0, background="#2b2738")
+canv_right.place(x=460, y=0)
+
+
+
+#title and text to the right canvas
+canv_right.create_text(190, 90, text="Create an account", font=("Helvetica", 28), fill="white")
+
+canv_right.create_text(128, 130, text="Already have an account?", font=("Helvetica", 11), fill="grey")
+
+canv_right.create_text(238, 130, text="Log in", font=("Helvetica", 11), fill="#b3a3e3")
+
+#Input fields for first name, last name, email etc.
+entry_first = CTkEntry(
+    canv_right,
+    placeholder_text= "First name",
+    width= 140,
+    height= 40,
+    corner_radius= 4,
+    fg_color= "#3b364c",
+    border_width=0
+)
+canv_right.create_window(130, 210, window = entry_first)
+
+entry_last = CTkEntry(
+    canv_right,
+    placeholder_text= "Last name",
+    width= 140,
+    height= 40,
+    corner_radius= 4,
+    fg_color= "#3b364c",
+    border_width=0
+)
+canv_right.create_window(330, 210, window = entry_last)
+
+entry_email = CTkEntry(
+    canv_right,
+    placeholder_text= "Email",
+    width= 300,
+    height= 40,
+    corner_radius= 4,
+    fg_color= "#3b364c",
+    border_width=0
+)
+canv_right.create_window(230, 280, window = entry_email)
+
+entry_pass = CTkEntry(
+    canv_right,
+    placeholder_text= "Enter your password",
+    width= 300,
+    height= 40,
+    corner_radius= 4,
+    fg_color= "#3b364c",
+    border_width=0
+)
+canv_right.create_window(230, 350, window = entry_pass)
+
+
+#creating a checkbox
+chkbox = CTkCheckBox(
+    app,
+    corner_radius= 5,
+    border_width= 2,
+    checkbox_height= 20,
+    checkbox_width= 20,
+    fg_color = "white",
+    hover= None,
+    checkmark_color= "purple",
+    text = "I agree to the",
+    font= ("Helvetica", 11), bg_color= "#2b2738")
+chkbox.place(x=405, y= 316.5)
+
+canv_right.create_text(
+    235,
+    410,
+    text= "Terms & Conditions",
+    font= ("Helvetica", 11),
+    fill = "#b3a3e3"
+)
+
+#create a button for creating an account
+btn_create = CTkButton(
+    app,
+    height= 40,
+    width= 300,
+    text = "Create account",
+    fg_color= "#6f54b5",
+    hover_color= "#493b92"
+)
+btn_create.place(y=370, x=400)
+
+#ampther text
+canv_right.create_text(
+    225,
+    538,
+    text = " Or register with",
+    font = ("Helvetica", 9),
+    fill = "grey"
+)
+
+#Social login options
+google = "icons/google.png"
+g_img = Image.open(google).resize((25, 25)).convert("RGBA")
+g_photo = ImageTk.PhotoImage(g_img)
+btn_google = CTkButton(app, image= g_photo, height= 38, text = "Google", fg_color= "#2b2738", border_width= 1, hover_color= "#140c21")
+btn_google.place(x=400, y=450)
+
+apple = "icons/apple.png"
+a_img = Image.open(apple).resize((25,25)).convert("RGBA")
+a_photo = ImageTk.PhotoImage(a_img)
+btn_apple = CTkButton(app, image= a_photo, height= 38, text = "Apple", fg_color= "#2b2738", border_width= 1, hover_color= "#140c21")
+btn_apple.place(x=557, y=450)
+
+#Run the app
+app.mainloop()
+
+
